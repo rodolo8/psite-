@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P_Site - Lomé, Togo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #4CAF50, #8BC34A, #FFC107);
+            color: white;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .logo-text h1 {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo-text p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .settings-btn {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .settings-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: rotate(90deg);
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 25px;
+            background: rgba(255,255,255,0.9);
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar:focus {
+            background: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .search-bar::placeholder {
+            color: #999;
+        }
+
+        /* Current Location */
+        .current-location {
+            background: white;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 4px solid #4CAF50;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .location-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .location-icon {
+            width: 50px;
+            height: 50px;
+            background: #4CAF50;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            animation: locationPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes locationPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .location-text h3 {
+            color: #4CAF50;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .location-text p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            background: white;
+            margin: 0 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            background: #f5f5f5;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .tab.active {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .tab:hover:not(.active) {
+            background: #e8f5e8;
+        }
+
+        /* Map Section */
+        .map-section {
+            margin: 20px;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border: 2px dashed #4CAF50;
+        }
+
+        .map-placeholder {
+            width: 80px;
+            height: 80px;
+            background: #4CAF50;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 40px;
+        }
+
+        .map-title {
+            font-size: 20px;
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+
+        .map-subtitle {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .map-instruction {
+            color: #4CAF50;
+            font-size: 14px;
+        }
+
+        /* Places List */
+        .places-section {
+            margin: 20px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .add-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .add-btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+
+        .place-item {
+            background: white;
+            margin-bottom: 15px;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .place-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        .place-info {
+            flex: 1;
+        }
+
+        .place-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+            margin-right: 15px;
+        }
+
+        .place-icon.hospital { background: #e74c3c; }
+        .place-icon.police { background: #3498db; }
+        .place-icon.market { background: #f39c12; }
+        .place-icon.university { background: #9b59b6; }
+        .place-icon.airport { background: #e67e22; }
+        .place-icon.court { background: #34495e; }
+        .place-icon.city-hall { background: #2c3e50; }
+        .place-icon.port { background: #16a085; }
+        .place-icon.stadium { background: #e74c3c; }
+        .place-icon.church { background: #8e44ad; }
+
+        .place-details h3 {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .place-details p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .place-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .place-category {
+            background: #e8f5e8;
+            color: #4CAF50;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .place-distance {
+            color: #666;
+            font-size: 12px;
+        }
+
+        .place-coords {
+            color: #999;
+            font-size: 11px;
+        }
+
+        .navigate-btn {
+            background: #FFC107;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .navigate-btn:hover {
+            background: #ffb300;
+            transform: scale(1.05);
+        }
+
+        /* Loading animation */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4CAF50;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                max-width: 100%;
+            }
+            
+            .header {
+                padding: 15px;
+            }
+            
+            .logo-text h1 {
+                font-size: 20px;
+            }
+            
+            .place-item {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <div class="header-top">
+                    <div class="logo">
+                        <div class="logo-icon">🗺️</div>
+                        <div class="logo-text">
+                            <h1>P_Site</h1>
+                            <p>Lomé, Togo</p>
+                        </div>
+                    </div>
+                    <button class="settings-btn" onclick="toggleSettings()">⚙️</button><!--end-->
+                </div>
+                <input type="text" class="search-bar" placeholder="Rechercher un lieu à Lomé..." id="searchInput">
+            </div>
+        </div>
+
+        <!-- Current Location -->
+        <div class="current-location">
+            <div class="location-info">
+                <div class="location-icon">📍</div>
+                <div class="location-text">
+                    <h3>Votre position actuelle</h3>
+                    <p id="currentCoords">Lat: 6.1319, Lng: 1.2226</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab(this, 'map')">🗺️ Carte</button><!--end-->
+            <button class="tab" onclick="switchTab(this, 'list')">📋 Liste</button><!--end-->
+        </div>
+
+        <!-- Map Section -->
+        <div class="map-section" id="mapSection">
+            <div class="map-placeholder">🗺️</div>
+            <div class="map-title">Carte de Lomé</div>
+            <div class="map-subtitle">(15 lieux stratégiques)</div>
+            <div class="map-instruction">Cliquez sur "Naviguer" pour ouvrir dans Maps</div>
+        </div>
+
+        <!-- Places List -->
+        <div class="places-section">
+            <div class="section-header">
+                <div class="section-title">Lieux Stratégiques de Lomé</div>
+                <button class="add-btn" onclick="addNewPlace()">+ Ajouter</button><!--end-->
+            </div>
+
+            <div id="placesList">
+                <!-- Places will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Database of strategic places in Lomé
+        const strategicPlaces = [
+            {
+                id: 1,
+                name: "CHU Sylvanus Olympio",
+                description: "Centre Hospitalier Universitaire principal de Lomé",
+                category: "Sécurité",
+                type: "hospital",
+                coordinates: { lat: 6.1375, lng: 1.2125 },
+                distance: 1.3
+            },
+            {
+                id: 2,
+                name: "Commissariat Central de Lomé",
+                description: "Direction générale de la police nationale",
+                category: "Sécurité",
+                type: "police",
+                coordinates: { lat: 6.1375, lng: 1.2125 },
+                distance: 1.3
+            },
+            {
+                id: 3,
+                name: "Grand Marché de Lomé",
+                description: "Plus grand marché du Togo",
+                category: "Commerce",
+                type: "market",
+                coordinates: { lat: 6.1319, lng: 1.2226 },
+                distance: 0,
+                            mapLink: mapLink
+            },
+            {
+                id: 4,
+                name: "Université de Lomé",
+                description: "Principale université du Togo",
+                category: "Éducation",
+                type: "university",
+                coordinates: { lat: 6.1753, lng: 1.2067 },
+                distance: 5.1
+            },
+            {
+                id: 5,
+                name: "Aéroport International Gnassingbé Eyadéma",
+                description: "Aéroport principal du Togo",
+                category: "Transport",
+                type: "airport",
+                coordinates: { lat: 6.1656, lng: 1.2545 },
+                distance: 5.1
+            },
+            {
+                id: 6,
+                name: "Palais de Justice de Lomé",
+                description: "Cour suprême et tribunaux",
+                category: "Administration",
+                type: "court",
+                coordinates: { lat: 6.1285, lng: 1.2176 },
+                distance: 0,
+                            mapLink: mapLink.7
+            },
+            {
+                id: 7,
+                name: "Hôtel de Ville de Lomé",
+                description: "Mairie centrale de Lomé",
+                category: "Administration",
+                type: "city-hall",
+                coordinates: { lat: 6.1289, lng: 1.2153 },
+                distance: 0,
+                            mapLink: mapLink.9
+            },
+            {
+                id: 8,
+                name: "Port Autonome de Lomé",
+                description: "Principal port maritime du Togo",
+                category: "Transport",
+                type: "port",
+                coordinates: { lat: 6.1167, lng: 1.2667 },
+                distance: 5.2
+            },
+            {
+                id: 9,
+                name: "Stade de Kégué",
+                description: "Stade national du Togo",
+                category: "Sport",
+                type: "stadium",
+                coordinates: { lat: 6.1447, lng: 1.2589 },
+                distance: 4.3
+            },
+            {
+                id: 10,
+                name: "Église Évangélique Presbytérienne du Togo",
+                description: "Église historique du centre-ville",
+                category: "Religion",
+                type: "church",
+                coordinates: { lat: 6.1298, lng: 1.2145 },
+                distance: 1.1
+            }
+        ];
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPlaces();
+            getCurrentLocation();
+            setupSearchFunctionality();
+        });
+
+        // Load places into the list
+        function loadPlaces() {
+            const placesList = document.getElementById('placesList');
+            placesList.innerHTML = '';
+
+            strategicPlaces.forEach(place => {
+                const placeElement = createPlaceElement(place);
+                placesList.appendChild(placeElement);
+            });
+        }
+
+        // Create a place element
+        function createPlaceElement(place) {
+            const placeDiv = document.createElement('div');
+            placeDiv.className = 'place-item';
+            placeDiv.innerHTML = `
+                <div style="display: flex; align-items: center; flex: 1;">
+                    <div class="place-icon ${place.type}">
+                        ${getPlaceIcon(place.type)}
+                    </div>
+                    <div class="place-details">
+                        <h3>${place.name}</h3>
+                        <p>${place.description}</p>
+                        <div class="place-meta">
+                            <span class="place-category">${place.category}</span>
+                            <span class="place-distance">${place.distance} km</span>
+                        </div>
+                        <div class="place-coords">${place.coordinates.lat}, ${place.coordinates.lng}</div>
+                    </div>
+                </div>
+                <button class="navigate-btn" onclick="navigateToPlace(${place.coordinates.lat}, ${place.coordinates.lng}, '${place.name}', place.mapLink || null)">🗺️ Naviguer</button><!--end--><button class="navigate-btn" style="background:#e74c3c;margin-left:5px;" onclick="deletePlace(${place.id})">🗑️ Supprimer</button><!--end--><!--
+                    🗺️ Naviguer
+                </button><!--end-->
+            `;
+            return placeDiv;
+        }
+
+        // Get icon for place type
+        function getPlaceIcon(type) {
+            const icons = {
+                hospital: '🏥',
+                police: '🚔',
+                market: '🛒',
+                university: '🎓',
+                airport: '✈️',
+                court: '⚖️',
+                'city-hall': '🏛️',
+                port: '🚢',
+                stadium: '🏟️',
+                church: '⛪'
+            };
+            return icons[type] || '📍';
+        }
+
+        // Navigate to a place
+        function navigateToPlace(lat, lng, name, mapLink = null) {
+    const url = mapLink || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name + " @" + lat + "," + lng)}`;
+    window.open(url, '_blank');
+}
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            
+            if (isMobile) {
+                // Open in mobile maps app
+                const url = `https://maps.google.com/maps?daddr=${lat},${lng}&q=${encodeURIComponent(name)}`;
+                window.open(url, '_blank');
+            } else {
+                // Open in web browser
+                const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&destination_place_id=${encodeURIComponent(name)}`;
+                window.open(url, '_blank');
+            }
+        }
+
+        // Get current location
+        function getCurrentLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        document.getElementById('currentCoords').textContent = `Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}`;
+                        
+                        // Update distances based on current location
+                        updateDistances(lat, lng);
+                    },
+                    function(error) {
+                        console.log('Erreur de géolocalisation:', error);
+                        // Keep default Lomé coordinates
+                    }
+                );
+            }
+        }
+
+        // Update distances from current location
+        function updateDistances(currentLat, currentLng) {
+            strategicPlaces.forEach(place => {
+                const distance = calculateDistance(currentLat, currentLng, place.coordinates.lat, place.coordinates.lng);
+                place.distance = distance;
+            });
+            
+            // Reload places with updated distances
+            loadPlaces();
+        }
+
+        // Calculate distance between two points
+        function calculateDistance(lat1, lng1, lat2, lng2) {
+            const R = 6371; // Earth's radius in km
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLng = (lng2 - lng1) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                    Math.sin(dLng / 2) * Math.sin(dLng / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return Math.round(R * c * 10) / 10; // Round to 1 decimal place
+        }
+
+        // Setup search functionality
+        function setupSearchFunctionality() {
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase();
+                filterPlaces(searchTerm);
+            });
+        }
+
+        // Filter places based on search term
+        function filterPlaces(searchTerm) {
+            const placeItems = document.querySelectorAll('.place-item');
+            placeItems.forEach(item => {
+                const placeName = item.querySelector('h3').textContent.toLowerCase();
+                const placeDescription = item.querySelector('p').textContent.toLowerCase();
+                
+                if (placeName.includes(searchTerm) || placeDescription.includes(searchTerm)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Switch between tabs
+        function switchTab(tabElement, tabType) {
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Add active class to clicked tab
+            tabElement.classList.add('active');
+            
+            // Show/hide sections based on tab
+            const mapSection = document.getElementById('mapSection');
+            if (tabType === 'map') {
+                mapSection.style.display = 'block';
+            } else {
+                mapSection.style.display = 'none';
+            }
+        }
+
+        // Toggle settings
+        function toggleSettings() {
+            alert('Fonctionnalité de paramètres à implémenter');
+        }
+
+        // Add new place
+        function addNewPlace() {
+    const adminPassword = prompt("Entrez le mot de passe administrateur :");
+    if (adminPassword !== "1487") {
+        alert("Mot de passe incorrect. Accès refusé.");
+        return;
+    }
+            const name = prompt('Nom du lieu:');
+            if (name) {
+                const description = prompt('Description:');
+                const category = prompt('Catégorie:');
+                
+                if (description && category) {
+            const mapLink = prompt('Lien Google Maps vers ce lieu (copier/coller l'URL):');
+            if (!mapLink) return alert("Lien requis !");
+                    // Get current location or use default
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        const newPlace = {
+                            id: strategicPlaces.length + 1,
+                            name: name,
+                            description: description,
+                            category: category,
+                            type: 'custom',
+                            coordinates: { 
+                                lat: position.coords.latitude, 
+                                lng: position.coords.longitude 
+                            },
+                            distance: 0,
+                            mapLink: mapLink
+                        };
+                        
+                        strategicPlaces.push(newPlace);
+                        loadPlaces();
+                        
+                        // Save to localStorage
+                        localStorage.setItem('daniGpsPlaces', JSON.stringify(strategicPlaces));
+                    });
+                }
+            }
+        }
+
+        // Load saved places from localStorage
+        function loadSavedPlaces() {
+            const savedPlaces = localStorage.getItem('daniGpsPlaces');
+            if (savedPlaces) {
+                const places = JSON.parse(savedPlaces);
+                // Merge with default places
+                strategicPlaces.push(...places.filter(place => place.type === 'custom'));
+            }
+        }
+
+        // Initialize saved places
+        loadSavedPlaces();
+    
+        // Supprimer un lieu par ID
+        function deletePlace(id) {
+            const confirmDelete = confirm("Voulez-vous vraiment supprimer ce lieu ?");
+            if (!confirmDelete) return;
+
+            const password = prompt("Mot de passe admin requis pour supprimer :");
+            if (password !== "1487") {
+                alert("Mot de passe incorrect.");
+                return;
+            }
+
+            const index = strategicPlaces.findIndex(p => p.id === id);
+            if (index !== -1) {
+                strategicPlaces.splice(index, 1);
+                loadPlaces();
+                localStorage.setItem('daniGpsPlaces', JSON.stringify(strategicPlaces));
+            }
+        }
+
+</script>
+</body>
+</html>
